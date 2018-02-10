@@ -485,6 +485,11 @@ def package_detail(request, slug, template_name="package/package.html"):
         for ac in profile.account_set.all() if ac.type == Account.TYPE_GITHUB
     ]
 
+    # to handle accounts without profiles
+    for ac in package.team_members.all():
+        if ac.type == Account.TYPE_GITHUB and ac.pk not in all_github_accounts_of_teammambers:
+            all_github_accounts_of_teammambers.append(ac.pk)
+
     can_edit_package = hasattr(request.user, "profile") and request.user.profile.can_edit_package(package)
 
     return render(request, template_name,
