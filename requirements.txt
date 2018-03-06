@@ -3,6 +3,7 @@ chardet==2.3.0
 coverage==4.3.4
 Django==1.11 # pyup: >=1.11,<2.0
 django-braces==1.9.0
+django-chroniker==1.0.10
 django-crispy-forms==1.6.1
 django-debug-toolbar==1.5
 django-environ==0.4.0
@@ -12,6 +13,7 @@ django-jsonview>=0.4.2
 dj-pagination==2.2.1
 django-reversion==2.0.8
 django-secure==1.0.1
+django-dynamic-preferences==1.5
 webstack-django-sorting==1.0.1
 django-storages==1.5.1
 djangorestframework==3.4.0
@@ -34,6 +36,7 @@ whitenoise==3.2.2
 Pillow==4.2.1
 rocketchat-API==0.6.3
 markdown==2.6.11
+python-dotenv==0.8.0
 
 # Redis support
 django-redis==4.6.0

@@ -21,7 +21,6 @@ services:
     command: /start-dev.sh
     depends_on:
       - postgres
-      - redis
     volumes:
       - .:/app
     ports:
@@ -30,6 +29,3 @@ services:
       - postgres
     env_file:
       - .env.local
-
-  redis:
-    build: ./compose/redis

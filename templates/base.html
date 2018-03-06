@@ -29,6 +29,7 @@
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" />
     {% block extra_head %}{% endblock %}
 </head>
+{% if global_preferences.general__released or request.user.is_superuser %}
 <body class="{% block body_class %}{% endblock %}" ng-controller="SearchCtrl" ng-init="init_search('{{ request.GET.q }}', '{% url 'apiv4:searchv2-list' %}', {{ MAX_WEIGHT }})">
 
 {% block messages %}
@@ -156,7 +157,6 @@
         <table class="table">
           <thead>
             <tr>
-              <th>{% trans "Reputation" %}</th>
               <th>{% trans "Project" %}</th>
               <th>{% trans "Description" %}</th>
             </tr>
@@ -164,7 +164,6 @@
           <tbody>
                 {% verbatim %}
                 <tr ng-repeat="item in items">
-                  <td>{{ item.weight / max_weight * 100 | number:0 }}</td>
                   <td>
                       <a ng-href="{{ item.absolute_url }}">{{ item.title }}</a>
                   </td>
@@ -196,5 +195,10 @@
 
     {{ PIWIK_CODE|safe }}
 </body>
+{% else %} {# else of if global_preferences.general__released #}
+    <body>
+        <img src="{{ STATIC_URL }}img/noreleased_{{ FRAMEWORK_NAME|lower }}.png" style="width: 100%">
+    </body>
+{% endif %}
 </html>
 {% endspaceless %}

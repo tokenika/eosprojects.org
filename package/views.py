@@ -1,5 +1,6 @@
 import importlib
 import json
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib import messages
@@ -7,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Case, When
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
@@ -16,7 +17,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from grid.models import Grid
-from homepage.models import Dpotw, Gotw
 from package.forms import PackageForm, PackageExampleForm, DocumentationForm, ProjectImagesFormSet
 from package.models import Category, Project, PackageExample, ProjectImage, TeamMembership
 from package.repos import get_all_repos
@@ -267,7 +267,7 @@ def category(request, slug, template_name="package/package_grid.html"):
         'categories': [
             {
                 "title_plural": category_.title_plural,
-                "count": category_.project_set.count(),
+                "count": category_.project_set.published().count(),
                 "description": category_.description,
                 "packages": category_.project_set.published().select_related().annotate(usage_count=Count("usage"))
             }
@@ -393,11 +393,13 @@ def package_list(request, template_name="package/package_grid.html"):
         'categories': [
             {
                 "title_plural": category.title_plural,
-                "count": category.package_count,
+                "count": category.project_count,
                 "description": category.description,
-                "packages": category.project_set.order_by("-repo_watchers", "name")
+                "packages": category.project_set.published().order_by("-repo_watchers", "name")
             }
-            for category in Category.objects.annotate(package_count=Count("project"))
+            for category in Category.objects.annotate(
+                project_count=Count(Case(When(project__is_published=True, then=1)))
+            )
         ]
     }
 
@@ -466,9 +468,22 @@ def package_detail(request, slug, template_name="package/package.html"):
 
     can_edit_package = hasattr(request.user, "profile") and request.user.profile.can_edit_package(package)
 
+    events_on_timeline = 5
+    timeline_events = package.events.order_by('-date')
+    timeline_axis_end = timeline_axis_start = None
+
+    if timeline_events.count() > 0:
+        timeline_end = timeline_events.first()
+        timeline_start = timeline_events[events_on_timeline-1] if timeline_events.count() > events_on_timeline else timeline_events[0]
+        timeline_axis_start = timeline_start.date - timedelta(30)
+        timeline_axis_end = timeline_end.date + timedelta(30)
+
     return render(request, template_name,
             dict(
                 package=package,
+                timeline_events=timeline_events,
+                timeline_axis_start=timeline_axis_start,
+                timeline_axis_end=timeline_axis_end,
                 project_imgs=[pi.img for pi in proj_imgs],
                 pypi_ancient=pypi_ancient,
                 no_development=no_development,

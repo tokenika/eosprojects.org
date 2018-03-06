@@ -123,6 +123,7 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect',
                 "core.context_processors.core_values",
                 "core.context_processors.google_analytics",
+                "dynamic_preferences.processors.global_preferences",
             ],
         },
     },
@@ -164,7 +165,8 @@ PREREQ_APPS = [
     'social_django',
     'floppyforms',
     'rest_framework',
-
+    'chroniker',
+    'dynamic_preferences',
 ]
 
 INSTALLED_APPS = PREREQ_APPS + PROJECT_APPS
@@ -231,8 +233,8 @@ STEEMCONNECT_APP_ID = environ.get('STEEMCONNECT_APP_ID')
 STEEMCONNECT_APP_SECRET = environ.get('STEEMCONNECT_APP_SECRET')
 
 ########################## Site specific stuff
-FRAMEWORK_NAME = "Steem"
-SITE_TITLE = "Steem Projects"
+SITE_TITLE = environ.get('SITE_TITLE', 'Steem Projects')
+FRAMEWORK_NAME = environ.get('FRAMEWORK_NAME', 'Steem')
 
 if LOCAL_INSTALLED_APPS:
     INSTALLED_APPS.extend(LOCAL_INSTALLED_APPS)
@@ -521,3 +523,26 @@ if PROJECT_GITHUB_REPOSITORY_URL.endswith("/"):
 
 
 PROJECT_SLUG_ON_PAGE = environ.get('PROJECT_SLUG_ON_PAGE')
+
+PROJECT_IMAGE_THUMBNAIL_RATIO = (16, 9)
+
+PROJECT_IMAGE_THUMBNAIL_SIZES = (
+    (64, 36),
+    (128, 72),
+    (320, 180),
+    (640, 360),
+    (1024, 576),
+    (1280, 720),
+)
+PROJECT_IMAGE_THUMBNAIL_QUALITY = 90
+
+assert all(
+    [
+        x/float(PROJECT_IMAGE_THUMBNAIL_RATIO[0]) == y/float(PROJECT_IMAGE_THUMBNAIL_RATIO[1])
+        for x, y in PROJECT_IMAGE_THUMBNAIL_SIZES
+    ]
+), "Make sure, that all PROJECT_IMAGE_THUMBNAIL_SIZES math defined ratio"
+
+CHRONIKER_CHECK_LOCK_FILE = False
+CHRONIKER_DISABLE_RAW_COMMAND = True
+CHRONIKER_EMAIL_SENDER = 'Chroniker'
