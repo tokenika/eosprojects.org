@@ -122,6 +122,7 @@ class Project(BaseModel):
     is_awaiting_approval = models.BooleanField(blank=True, null=None, default=False)
     is_published = models.BooleanField(blank=True, null=None, default=False)
     publication_time = models.DateTimeField(_("Publication time"), blank=True, null=True, default=None)
+    approval_request_datetime = models.DateTimeField(blank=True, null=True, default=None)
     approvers = models.ManyToManyField(User, blank=True, related_name='approved_projects')
     last_modified_by = models.ForeignKey(User, blank=True, null=True, related_name="modifier", on_delete=models.SET_NULL)
     last_fetched = models.DateTimeField(blank=True, null=True, default=timezone.now)
@@ -203,7 +204,7 @@ class Project(BaseModel):
 
     def grids(self):
 
-        return (x.grid for x in self.gridpackage_set.all())
+        return [x.grid for x in self.gridpackage_set.all()]
 
     def repo_name(self):
         return re.sub(self.repo.url_regex, '', self.repo_url)
