@@ -44,4 +44,14 @@
     &__link {
         color: $base-font-color;
     }
+
+    &__love-icon {
+        @extend .material-icons;
+        font-size: 18px;
+
+        &::before {
+            content: 'favorite';
+            color: $gen-red;
+        }
+    }
 }

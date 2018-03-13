@@ -12,11 +12,19 @@
 
       <h3>Who maintains this site?</h3>
 
-        <p>This website was created and is maintained by <a href="https://steemit.com/@noisy" target="_blank">Krzysztof "noisy" Szumny</a>. In most cases, he is the one, who introduce new features, which are so good-looking only thanks to work of <a href="https://steemit.com/@andrejcibik" target="_blank">Andrej Cibík</a> - lead designer of this project.
+        <p>This website was created and is maintained by <a href="https://tokenika.io/" target="_blank">Tokenika</a>. This website was designed in such a way that community is able to add/edit all entries about projects:
+            <ul>
+                <li>everyone can add a new project as a draft</li>
+                <li>author of draft and team members of a project can edit it</li>
+                <li>moderators can edit/publish all project</li>
+            </ul>
+
+            We believe, that it is in best interest of every active EOS community member, to keep ledger of all projects up to date.
+
         </p>
 
       <h3>How can I contribute?</h3>
-        <p>This website was prepared in a way, that it could be maintained mostly by the community. <a href="https://github.com/noisy/steemprojects.com/" target="_blank">This project is open-source</a>, what means that everyone can contribute, by creating a pull request. Even if you are not a programmer, you can still help by adding information about new projects, which should be listed on {{ SITE_TITLE }} or you can help by creating <a href="{% url 'grids' %}">Comparision Grids</a>.</p>
+        <p><a href="{{ PROJECT_GITHUB_REPOSITORY_URL }}" target="_blank">This project is open-source</a>, what means that everyone can contribute, by creating a pull request. Even if you are not a programmer, you can still help by adding information about new projects, which should be listed on {{ SITE_TITLE }} or you can help by creating <a href="{% url 'grids' %}">Comparision Grids</a>.</p>
 
       <h3>What are grids?</h3>
 
@@ -29,9 +37,9 @@
 
       <p>Categories are broad groups of {{ FRAMEWORK_NAME }} projects into something more granular than Grids. A project can only have one category. Changing then requires backend work, and is not done lightly. This is intentional, done in order to make searching easier.</p>
 
-      <h3>Which source control sites do you support?</h3>
-
-      <p>Github and Bitbucket are supported.</p>
+{#      <h3>Which source control sites do you support?</h3>#}
+{##}
+{#      <p>Github and Bitbucket are supported.</p>#}
 
 {#      <h3>What about RSS & Atom Syndication?</h3>#}
 {##}
