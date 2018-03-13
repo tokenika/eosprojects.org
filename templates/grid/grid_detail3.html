@@ -136,7 +136,7 @@
                         <td>
                             {% if grid_package.package.repo_url %}
                                 <img class="package-githubcommits" style="padding: 7px 0"
-                                     src="https://chart.googleapis.com/chart?cht=bvg&chs=105x20&chd=t:{{ grid_package.package|commits_over_52 }}&chco=666666&chbh=1,1,1&chds=0,20"
+                                     src="https://chart.googleapis.com/chart?cht=bvg&chs=105x20&chd=t:{{grid_package.package.commits_over_52}}&chco=f88a2f&chbh=1,1,1&chds=0,10&chf=bg,s,000000"
                                 />
                             {% endif %}
                         </td>
