@@ -54,7 +54,7 @@ urlpatterns = [
         StaticPageView.as_view(
             template_name='pages/contribute.html',
             context={
-                "membership_in_steemprojects": TeamMembership.objects.filter(project__name="Steem Projects"),
+                "membership_in_this_project": TeamMembership.objects.filter(project__name=settings.SITE_TITLE),
             },
         ),
 
