@@ -8,11 +8,11 @@ COPY ./requirements.txt /requirements.txt
 RUN apt-get update
 RUN apt-get install -y libssl-dev
 
-RUN pip install setuptools
-RUN pip install scrypt
-RUN pip install wheel
-RUN pip install pytest
-RUN pip install steem
+RUN pip install setuptools==36.2.2
+RUN pip install scrypt==0.8.0
+RUN pip install wheel==0.29.0
+RUN pip install pytest==3.4.1
+RUN pip install steem==1.0.1
 
 RUN pip install -r /requirements.txt \
     && groupadd -r django \
